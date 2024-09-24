@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // Union type is  => Typescript  way of saying that a value can be "either this type or that type"
 const message = Date.now() % 2 === 0 ? 'Hello, Tuesdays!' : null; // this means that the message can either be a string or null.
 console.log(message);
@@ -70,7 +71,6 @@ const getUsername = (username) => {
 };
 console.log(getUsername('Emmanuel')); // expected output: 'Username: Emmanuel'
 console.log(getUsername(null)); // expected output: 'Guest'
-// Exercise 2: Restricting function parameters.
 const move = (direction, distance) => {
     if (typeof direction !== 'string' || typeof distance !== 'number') {
         throw new Error('Both direction and distance must be of type string and number');
@@ -81,3 +81,54 @@ move('up', 10); // expected output: Moving 10 units in the up direction
 move('left', 20); // expected output: Moving 20 units in the left direction
 // move('right', '10') // expected error: Both direction and distance must be of type string and number
 move('down', 30); // expected output: Moving 10 units in the down direction
+/**
+ * NARROWING
+ * Wider vs Narrower Types
+ * Some types are wider versions of other types
+ * Literal Types: Literal types in TypeScript are specific values. For example:
+
+    -"small" is a literal string type, meaning it can only represent the value "small".
+    -42 is a literal number type, meaning it can only represent the number 42.
+    -true is a literal boolean type, meaning it can only represent true.
+    -Wider Types: These are more general types that can represent a broader range of values. For example:
+
+    -string can represent any string, not just "small".
+    -number can represent any number, not just 42.
+    -boolean can represent both true and false.
+ */
+const logSize = (size) => {
+    console.log(size.toUpperCase());
+};
+logSize('small'); // expected output: SMALL
+// if a function accepts only "small" we cannot pass any random string.
+const recordOfSizes = {
+    small: 'Small',
+    large: 'Large',
+};
+const logSize2 = (size) => {
+    console.log(recordOfSizes[size]);
+};
+logSize2('small'); // expected output: Small but got "undefined" instead
+// Unions are  Wider Than their members
+const logId3 = (id) => {
+    console.log(`User ID: ${id}`);
+};
+logId3(38808187); // expected output: User ID: 38808187
+logId3(true); // expected output: User ID: true
+logId3("abc");
+const user = {
+    id: 38808187,
+};
+const logId4 = (id) => {
+    console.log(`User ID: ${id}`);
+};
+logId4(user.id);
+const getStudentInfo = (stdInfo) => {
+    console.log(`Name: ${stdInfo.name}, Age: ${stdInfo.age}, Address: ${stdInfo.address}`);
+};
+let student = {
+    name: 'Emmanuel',
+    age: 23,
+    address: 'Nyeri View'
+};
+getStudentInfo(student); // expected output: Name: Emmanuel, Age: 23, Grade: A
