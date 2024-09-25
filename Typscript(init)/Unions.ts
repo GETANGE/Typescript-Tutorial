@@ -150,7 +150,10 @@ const recordOfSizes = {
     large: 'Large',
 }
 
-const logSize2 = (size: 'small' | 'large') => {
+type size = 'small' | 'large'; 
+// size = recordOf => this can nnot be re-aasigned because it has been narrowed
+
+const logSize2 = (size:size) => {
     console.log(recordOfSizes[size]);
 }
 
@@ -173,7 +176,7 @@ const user : User = {
     id: 38808187,
 }
 
-const logId4 = (id: number) =>{
+const logId4 = (id: number | string) =>{
     console.log(`User ID: ${id}`);
 }
 logId4(user.id) 
@@ -189,3 +192,94 @@ let student = {
     age: 23, 
     address: 'Nyeri View'}
 getStudentInfo(student) // expected output: Name: Emmanuel, Age: 23, Grade: A
+
+// WE CAN NARROW USING TYPEOF and IF STATEMENT
+// The "typeOf" operator is used to for narrowing purposes.
+const arrays = [1, "name", 3, "age"]
+const numbers = arrays.map((number)=>{
+    if(typeof number === "number"){
+        return number
+    }
+})
+console.log(numbers) // expected output: [1, 3]
+
+// narrowing only applies within the block's scope.
+const getAlbumYear = (year: string | number | boolean)=>{
+    if(typeof year === "string"){
+        console.log(`The album was released in ${year.toUpperCase()}`) // year is a string
+    }else if(typeof year === "number"){
+        console.log(`The album was released in ${year.toFixed(0)}`) // year is a number
+    }
+    console.log(year)
+}
+
+getAlbumYear('1980') // expected output: The album was released in 1980
+getAlbumYear(1980) // expected output: The album was released in 1980
+
+const validateUsername = (username: string | null): boolean => {
+    if(typeof username === "string" && username.length >= 5){
+        return true
+    }
+    return false
+}
+
+console.log(validateUsername('Emmanuel')) // expected output: true
+console.log(validateUsername(null)) // expected output: false
+
+/**
+ * The Widest Type: UNKNOWN
+ * Typescript's widest type is unknown. It represents something that we don't know what it is.
+ */
+// example
+// anything is assigneable to unknown!
+const fn = (input: unknown) =>{
+    if(typeof input === "string"){
+        console.log(input.toUpperCase())
+    } else if(typeof input === "number"){
+        console.log(input.toFixed(0))
+    } else if(typeof input === "object"){
+        console.log(input?.name)
+    } else {
+        console.log("Unknown input")
+    }
+}
+
+fn('Hello') // expected output: HELLO
+fn(10) // expected output: 10
+fn({name: 'Emmanuel'}) // expected output: Emmanuel
+fn(true) // expected output: Unknown input
+
+/**
+ * DIFFERENCES BETWEEN "ANY " AND "UNKNOWN"
+ * UNKNOWN => This is the widest.
+ * ANY => This is the narrowest.
+ */
+const handleWebhookInput = (input: unknown)=>{
+    return input.toUpperCase()
+}
+
+const handleWebhookInput2 = (input: any)=>{
+    return input.toUpperCase()
+}
+
+// handleWebhookInput('Hello') // expected error: Property 'toUpperCase' does not exist on type 'unknown'
+let results=handleWebhookInput2('Hello') // expected output: HELLO
+console.log(results)
+
+/**
+ * NEVER TYPE
+ * The never type is the only type that is not assignable to any other type.
+ * It is used when a function does not return a value.
+ * never represents something that will never happen. It's the very bottom of the type hierarchy.
+ */
+
+const parseValue = (value: unknown) => {
+        if (typeof value === 'string' || typeof value === 'number') {
+            return value.data.id
+        }
+    
+        throw new Error('Parsing error!')
+}
+
+// parseValue('Hello') // expected error: Parsing error!
+

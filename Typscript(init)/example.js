@@ -202,3 +202,64 @@ const concatName = (first, last) => {
 };
 const result2 = concatName("Emmanuel", "Getange"); // when calling concat with just a first name, we will get an error.
 console.log(result2);
+// the last namse is optional
+const concatNameWithOptional = (first, last) => {
+    if (!last) {
+        return first;
+    }
+    return `${first} ${last}`;
+};
+const result3 = concatNameWithOptional("Emmanuel"); // when calling concat with just a first name, it will work correctly.
+console.log(result3);
+const result4 = concatNameWithOptional("Emmanuel", "Getange");
+console.log(result4);
+// Rest Parameters
+const sumNumbers = (...numbers) => {
+    return numbers.reduce((acc, current) => acc + current, 0);
+};
+const result5 = sumNumbers(1, 2, 3, 4, 5);
+console.log(result5);
+const modifyUser = (user, id, makeChange) => {
+    return user.map((user) => {
+        if (user.id === id) {
+            return makeChange(user);
+        }
+        return user;
+    });
+};
+const users = [
+    { id: "1", name: "John Doe" },
+    { id: "2", name: "Jane Doe" },
+];
+const results = modifyUser(users, "1", function (user) {
+    return { user, name: 123 };
+});
+console.log(results);
+// Functions Returning void
+// const addClickEventListener =(listener) => {
+//     document.addEventListener("click", listener);
+// };
+// addClickEventListener(()=>{
+//     console.log("You clicked!");
+// })
+const acceptsCallback = (callback) => {
+    callback();
+};
+const returnString = () => {
+    return "Hello World!";
+};
+let results_1 = acceptsCallback(returnString);
+console.log(results_1);
+function fetchData() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch("http://198.199.82.69:8040/api/v1/disease");
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const data = yield response.json();
+        console.log(data.data.diseases);
+        return data;
+    });
+}
+// Call the function
+fetchData();
