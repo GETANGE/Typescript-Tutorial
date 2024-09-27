@@ -201,3 +201,119 @@ albumAwards2.winOscar = "Nominated";
 albumAwards2.wins = 30
 
 console.log(albumAwards2)
+
+type BaseAwards = "Grammy" | "MercuryPrice" | "Billboard"
+
+type ExtendedAlbumAwards = Record<BaseAwards , boolean> & {
+    [ award: string]: boolean | string | number
+}
+
+const extendedNominations: ExtendedAlbumAwards ={
+    Grammy: true,
+    MercuryPrice: false,
+    Billboard: true,
+    winIMAX: false,
+    wins: 30,
+    winOscar: "Nominated",
+}
+
+console.log(extendedNominations)
+
+// This technique can also work when using an interface
+interface BaseAwardss {
+    Grammy: boolean;
+    MercuryPrice: boolean;
+    Billboard: boolean;
+}
+
+interface ExtendedAlbumAwardss extends BaseAwardss {
+    [award: string]: boolean | string | number
+}
+
+const extendedNomination2: ExtendedAlbumAwardss ={
+    ...albumAwards,
+    Grammy: true,
+    MercuryPrice: false,
+    Billboard: true,
+    winIMAX: false,
+    wins: 30,
+    winOscar: "Nominated",
+}
+console.log("Using the interface to perform intersection")
+console.log(extendedNomination2)
+
+/**
+ * Type object
+ * Similar to string, number, and boolean, object is a global type in TypeScript.
+ * object represents any non-primitive type. This includes arrays, functions, and objects.
+ */
+const acceptAllNonPrimitiveTypes =(obj: object)=>{
+    return obj; // this will accept any non-primitive type.
+}
+
+// this function can be accept any non-primitive value.
+let obj1=acceptAllNonPrimitiveTypes({name: "John Doe", age: 30, isActive: true})
+let obj2=acceptAllNonPrimitiveTypes(["Apple", "Banana", "Cherry"])
+let obj3=acceptAllNonPrimitiveTypes(function helloWorld() {
+    console.log("Hello, World!")
+})
+console.log(obj1,obj2,obj3)
+
+let obj4: object = {name: "Alice"}
+let obj5: object = [1,2,3]
+let obj6: object = () => {
+    console.log("Hello, World!")
+}
+
+// how to access properties declared as object type
+// obj4.name // Property 'name' does not exist on type 'object'.
+
+let name1=(obj4 as { name: string}).name;
+console.log(name1);
+
+// object types in functions
+
+/**
+ * REDUCING DUPLICATES WITH UTILITY TYPES
+ * 
+ * METHOD 1: PARTIAL
+ * The Partial utility type lets you create a new object type from an existing one, 
+ * except all of its properties are optional.
+ */
+interface Album3 {
+    id: string,
+    artist: string,
+    title: string,
+    releaseYear: number,
+    genre: string
+}
+
+type PartialAlbum3 = Partial<Album3>
+
+const updateAlbum = ( album: PartialAlbum3)=>{
+    return {...album }
+}
+
+const album3: Album3 = {
+    id: "1",
+    artist: "Otile Brown",
+    title: "Grace",
+    releaseYear: 2024,
+    genre: "Pop",
+}
+
+console.log(updateAlbum(album3))
+
+/**
+ * USING PICK AND OMIT
+ */
+type Album7 = {
+    id: string,
+    artist: string,
+    title: string,
+    releaseYear: number,
+    genre: string,
+}
+
+type PickedAlbum = Pick<Album7, "producer">; // brings an error
+type OmittedAlbum = Omit<Album7, "artist">; // no error.

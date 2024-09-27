@@ -74,3 +74,50 @@ albumAwards2.winIMAX = true;
 albumAwards2.winOscar = "Nominated";
 albumAwards2.wins = 30;
 console.log(albumAwards2);
+const extendedNominations = {
+    Grammy: true,
+    MercuryPrice: false,
+    Billboard: true,
+    winIMAX: false,
+    wins: 30,
+    winOscar: "Nominated",
+};
+console.log(extendedNominations);
+const extendedNomination2 = Object.assign(Object.assign({}, albumAwards), { Grammy: true, MercuryPrice: false, Billboard: true, winIMAX: false, wins: 30, winOscar: "Nominated" });
+console.log("Using the interface to perform intersection");
+console.log(extendedNomination2);
+/**
+ * Type object
+ * Similar to string, number, and boolean, object is a global type in TypeScript.
+ * object represents any non-primitive type. This includes arrays, functions, and objects.
+ */
+const acceptAllNonPrimitiveTypes = (obj) => {
+    return obj; // this will accept any non-primitive type.
+};
+// this function can be accept any non-primitive value.
+let obj1 = acceptAllNonPrimitiveTypes({ name: "John Doe", age: 30, isActive: true });
+let obj2 = acceptAllNonPrimitiveTypes(["Apple", "Banana", "Cherry"]);
+let obj3 = acceptAllNonPrimitiveTypes(function helloWorld() {
+    console.log("Hello, World!");
+});
+console.log(obj1, obj2, obj3);
+let obj4 = { name: "Alice" };
+let obj5 = [1, 2, 3];
+let obj6 = () => {
+    console.log("Hello, World!");
+};
+// how to access properties declared as object type
+// obj4.name // Property 'name' does not exist on type 'object'.
+let name1 = obj4.name;
+console.log(name1);
+const updateAlbum = (album) => {
+    return Object.assign({}, album);
+};
+const album3 = {
+    id: "1",
+    artist: "Otile Brown",
+    title: "Grace",
+    releaseYear: 2024,
+    genre: "Pop",
+};
+console.log(updateAlbum(album3));
